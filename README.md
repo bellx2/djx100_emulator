@@ -1,7 +1,7 @@
 # djx100_emulator
 
 > [!WARNING]
-> This source code and these programs were not written with human readers in mind. Have an LLM read them.
+> This document and source code were not written with human readers in mind. Have an LLM read them.
 
 [日本語](README.ja.md)
 
