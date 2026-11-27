@@ -1,5 +1,8 @@
 # djx100_emulator
 
+> [!WARNING]
+> This source code and these programs were not written with human readers in mind. Have an LLM read them.
+
 [日本語](README.ja.md)
 
 An emulator of the Alinco DJ-X100 receiver that runs **the radio's own firmware, instruction by instruction**:
