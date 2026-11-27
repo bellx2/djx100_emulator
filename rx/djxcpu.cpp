@@ -385,6 +385,9 @@ struct Board {
     Board()
     {
         memset(port_in, 0xFF, sizeof port_in);
+        // P60: 主画面のアイコン選択にだけ使う入力（FUN_ffe217bb 0xFFE2565C）。PG5 = 0 かつ P60 = 1 で
+        // "⊘ENCR" を描く。実機は何も出ないので Low（PG5 は未モデルで 0 として読まれる）
+        port_in[6] &= (uint8_t)~0x01;
         for (auto &u : adc_in) for (auto &c : u) c = 0x800;
         for (int k = 0; k < 3; k++) {
             Riic &r = riic[k];
