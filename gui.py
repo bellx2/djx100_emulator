@@ -252,9 +252,10 @@ class App:
         body = tk.Frame(f, bg='#1b1c1e', padx=10, pady=10, highlightthickness=1, highlightbackground='#111')
         body.grid(row=1, column=1)
         w, h = int(320 * self.lcd_scale), int(240 * self.lcd_scale)
-        self.rlcd_blank = tk.PhotoImage(width=w, height=h)      # pixel size until the firmware draws the LCD
-        self.rlcd = tk.Label(body, bg='black', image=self.rlcd_blank, width=w, height=h, bd=0, highlightthickness=3,
-                             highlightbackground='#111')
+        # Canvas に描く（macOS の Tk 9 では Label の画像に余計な枠が重なるため）
+        self.rlcd = tk.Canvas(body, bg='black', width=w, height=h, bd=0, highlightthickness=3,
+                              highlightbackground='#111')
+        self.rlcd_item = self.rlcd.create_image(3, 3, anchor='nw')     # highlight の内側に置く
         self.rlcd.grid(row=0, column=0, pady=(0, 10))
         self.rlcd.bind('<MouseWheel>', self.on_radio_wheel)
         self.rlcd_img = None
@@ -341,7 +342,7 @@ class App:
                         im = im.resize((int(320 * self.lcd_scale), int(240 * self.lcd_scale)),
                                        Image.NEAREST if float(self.lcd_scale).is_integer() else Image.BILINEAR)
                     self.rlcd_img = ImageTk.PhotoImage(im)
-                    self.rlcd.configure(image=self.rlcd_img, width=im.width, height=im.height)
+                    self.rlcd.itemconfigure(self.rlcd_item, image=self.rlcd_img)
             except ImportError:
                 self.log('the radio LCD needs Pillow (pip install pillow)')
                 return
