@@ -1,3 +1,5 @@
+/* Modified for djx100_emulator (DJ-X100 emulator), 2026: RXv2 exception table base EXTB for the fixed vectors; shift counts masked to 5 bits (SHAR / SHLL / SHLR, ROTL / ROTR register forms).
+   Original: GNU binutils-gdb (sim/rx), see rx/gnu/README.md. */
 /* rx.c --- opcode semantics for stand-alone RX simulator.
 
 Copyright (C) 2008-2026 Free Software Foundation, Inc.

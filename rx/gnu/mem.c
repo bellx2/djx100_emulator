@@ -1,3 +1,5 @@
+/* Modified for djx100_emulator (DJ-X100 emulator), 2026: RX65N memory map (no access exceptions), peripheral space routed to the DJ-X100 board model (rxio_*), write watch hook; the board-specific LED / UART code of the original removed.
+   Original: GNU binutils-gdb (sim/rx), see rx/gnu/README.md. */
 /* mem.c --- memory for RX simulator.
 
 Copyright (C) 2005-2026 Free Software Foundation, Inc.

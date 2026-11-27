@@ -1,3 +1,5 @@
+/* Modified for djx100_emulator (DJ-X100 emulator), 2026: RXv2 control register EXTB (CR 29).
+   Original: GNU binutils-gdb (sim/rx), see rx/gnu/README.md. */
 /* reg.c --- register set model for RX simulator.
 
    Copyright (C) 2005-2026 Free Software Foundation, Inc.
