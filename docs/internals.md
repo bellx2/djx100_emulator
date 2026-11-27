@@ -57,7 +57,7 @@ How it runs:
 | Decoding | `stock/mkcoff.py` wraps the boot image into a COFF file (cl55 assembler/linker, every section at its load address) and TI's `dis55 -r -i` disassembles it -> `build/stock/DigRxx107_r.dis` (made by `build.sh/build.sh` once; needs the TI C5500 CGT). The simulator decodes from that listing, checks every instruction against the image bytes, and turns undecodable lines (data between functions) into traps that fire only if executed. |
 | CPU core additions | fast-return model (RETA/CFCT, as SYS/BIOS context switches read them), circular addressing (ST2 ARnLC/CDPLC, BSAxx, BKxx), ARMS = 0 meaning of `*ARn(short(#k))`, SATD saturation and ACOVx flags, `overflow()` / CARRY / `TC1 ^ TC2` conditions, dual-MAC `A :: B` (one Cmem update), `pair()` / `dual()` operands, `rnd(HI(saturate(ACx << Tx)))`, RPTCC, ROL/ROR via CARRY, BCNT, SUBC, MANT/NEXP, ... - everything TI's DSPLIB and cl55 code in the image uses |
 | Board | GPT0 timer (SYS/BIOS clock tick, TINT, TIAFR), clock-stop handshakes, UART with THR-empty / level RX interrupts and FIFO status, memory-to-memory DMA (DMA3 ch1 copies the ADC half buffers), I2C master transfers to the **WM8731 audio codec at 0x1A** (48 kHz, I2S) besides the CPU at 0x7F, 48 kHz audio from DMA1 ch1 (L) + ch3 (R), AMBE-3000R READY packet after power-up |
-| AMBE-3000R | control packets with several fields (LOWPOWER, VERSTRING, PRODID, RATET, RATEP, INIT, ...), channel packets (CHAND / CHAND4) decoded with **ambe2-c**: rate 34 (AMBE+2 2450 without FEC - what the stock DSP uses: it does the FEC itself), 33 (3600x2450), 0 (AMBE 2400, D-STAR), 17 / 26 (AMBE+ 4000); speech packets back over the UART |
+| AMBE-3000R | control packets with several fields (LOWPOWER, VERSTRING, PRODID, RATET, RATEP, INIT, ...), channel packets (CHAND / CHAND4) decoded with **ambe2-c**: rate 34 (AMBE+2 2450 without FEC - what the stock DSP uses: it does the FEC itself), 33 (3600x2450), 0 (AMBE+ 2400), 17 / 26 (AMBE+ 4000). D-STAR: the stock DSP sets RATEP 0x0130 0x0763 0x4000 0x0000 0x0000 0x0048 (AMBE-2000 compatible 2400 + 1200 FEC) and passes the 72 air bits unchanged (CHAND4); decoded with **mbelib**'s 3600x2400 (`third_party/mbelib`: deinterleave, Golay, PN, synthesis) - ambe2-c's rate 0 is a different codec. Speech packets back over the UART |
 | Speed | the SYS/BIOS idle loop (0x04BB2B) is treated like IDLE; dual-MAC FIR loops (`RPT` + `MAC :: MAC`) and TI's `iircas32` (0x034987, called ~240 000 times/s) run natively with the interpreter's arithmetic - checked bit-exact (AMBE frames and audio identical with `TSIM_NONATIVE=1`). 1.6-1.9x real time for all modes on this PC. |
 
 Verified:
@@ -69,7 +69,8 @@ Verified:
   * T102 / B54: the four SDR# recordings decode (`ci` with station codes), speech envelope 0.70-0.85 correlated with
     the T102 SDR# decoder's audio.
   * D-STAR: synthetic header -> `dcMY JA1EMU  UR CQCQCQ`, `ci` call start / end; the whole radio shows MY / UR on the
-    LCD.
+    LCD. Voice: the standard silence frame (`9E8D3288261A3F61E8`) reaches the AMBE model unchanged and decodes with no
+    FEC corrections to near silence (rms 25); voiced frames from `siggen.dstar_voice_frame` give audio (rms ~1800).
   * AIS: type 1 report -> `ps 431000001,N35.599998,E139.699996,045,1,#APR/...` (to the CPU in the whole radio too).
     Firmware bug found on the way: a negative latitude / longitude is built as bit 31 | low 26 bits (no sign
     extension, `SFTS AC0,#31,AC2` at 0x020208) -> garbage south / west positions; invisible in Japan.
