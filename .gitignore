@@ -1,0 +1,14 @@
+build/
+__pycache__/
+*.pyc
+firmware/*
+!firmware/README.md
+data/
+*.wav
+*.cf32
+*.u16
+*.bin
+*.mot
+*.dis
+*.map
+tsim_profile.txt
