@@ -719,6 +719,8 @@ def main():
     app = App(root, a)
     if a.seek and isinstance(app.e.src, D.WavSource):
         app.e.src.seek(a.seek)
+    if a.shot and sys.platform != 'win32':
+        ap.error('--shot is Windows only (PrintWindow)')
     if a.shot:
         def shot():
             # capture only this window's own pixels (PrintWindow), never other windows on the screen
