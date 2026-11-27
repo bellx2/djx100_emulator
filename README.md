@@ -61,6 +61,7 @@ python tools/make_test_iq.py analog                          # test signal: data
 python gui.py data/test_145000000Hz.wav --radio-freq 145.1   # boots, then types 145.1 + SET on the keypad
 python gui.py --usb                                          # antenna: RTL-SDR on USB (--usb-gain dB, default AGC)
 python gui.py --rtl 127.0.0.1:1234                           # antenna: rtl_tcp server
+python gui.py --usb --fullband                               # boots with the CPU input PJ0 high
 ```
 
 The left side of the window is the radio. Buttons are held like real keys (mouse down = key down).
@@ -92,6 +93,7 @@ file name (`..._145000000Hz...`).
 | `DJX_EEPROM` | EEPROM image (default `data/radio/eeprom.bin`) |
 | `C5500_CGT` | TI C5500 code generation tools |
 | `DJX_RTLSDR_DLL` | `rtlsdr.dll` (file or folder) |
+| `DJX_FULLBAND` | `1`: boots with the CPU input PJ0 high (same as `gui.py --fullband`) |
 
 ## Tests
 

@@ -61,6 +61,7 @@ python tools/make_test_iq.py analog                          # テスト信号 d
 python gui.py data/test_145000000Hz.wav --radio-freq 145.1   # 起動後にキーパッドで 145.1 + SET を入力
 python gui.py --usb                                          # アンテナ: USB の RTL-SDR（--usb-gain dB、既定は AGC）
 python gui.py --rtl 127.0.0.1:1234                           # アンテナ: rtl_tcp サーバ
+python gui.py --usb --fullband                               # CPU の入力 PJ0 を High にして起動
 ```
 
 ウィンドウの左側が無線機です。ボタンは本物のキーと同じく押している間だけ押下になります（マウスを押す = キーを押す）。
@@ -92,6 +93,7 @@ IQ の WAV ファイルは SDR# / SDR++ の録音（RIFF/RF64、uint8 / int16 / 
 | `DJX_EEPROM` | EEPROM イメージ（既定 `data/radio/eeprom.bin`） |
 | `C5500_CGT` | TI C5500 Code Generation Tools |
 | `DJX_RTLSDR_DLL` | `rtlsdr.dll`（ファイルかフォルダ） |
+| `DJX_FULLBAND` | `1` で CPU の入力 PJ0 を High にして起動（`gui.py --fullband` と同じ） |
 
 ## テスト
 
